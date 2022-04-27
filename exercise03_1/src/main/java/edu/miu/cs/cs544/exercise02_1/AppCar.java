@@ -1,5 +1,6 @@
 package edu.miu.cs.cs544.exercise02_1;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -13,7 +14,7 @@ public class AppCar {
 
     static {
 		// If there is more than one entity, you will have to pass them as a comma delimited argument list to the method below
-		sessionFactory = HibernateUtils.getSessionFactory(Car.class);
+		sessionFactory = HibernateUtils.getSessionFactory(Arrays.asList(Car.class));
 	}
 
     public static void main(String[] args) {

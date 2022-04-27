@@ -15,31 +15,40 @@ import org.hibernate.service.ServiceRegistry;
 
 public class HibernateUtils {
 
-    public static SessionFactory getSessionFactory(Class entityClasses){
-        SessionFactory sessionFactory=null;
+    private static SessionFactory sessionFactory;
 
-        Map<String,Object> settings=new HashMap<>();
-        settings.put(Environment.DRIVER, "com.mysql.cj.jdbc.Driver");
-        settings.put(Environment.URL, "jdbc:mysql://localhost:3306/cs544");
-        settings.put(Environment.USER, "root");
-        settings.put(Environment.DIALECT, "org.hibernate.dialect.MySQL8Dialect");
-        settings.put(Environment.SHOW_SQL, "true");
-        //settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
-        settings.put(Environment.HBM2DDL_AUTO, "update");
+    private static Configuration configuration = new Configuration();
 
-        try{
-            ServiceRegistry standardRegistry=new StandardServiceRegistryBuilder()
-                    .applySettings(settings).build();
+    @SuppressWarnings({ "rawtypes" })
+    public static SessionFactory getSessionFactory(List<Class> entityClasses) {
+        if (sessionFactory == null) {
+            try {
+                Properties settings = new Properties();
+                settings.put(Environment.DRIVER, "com.microsoft.sqlserver.jdbc.SQLServerDriver");
+                settings.put(Environment.URL, "jdbc:mysql://localhost:3306/cs544"); //10.10.10.15
+                settings.put(Environment.USER, "root");
+                settings.put(Environment.DIALECT, "org.hibernate.dialect.SQLServer2008Dialect");
 
-            Metadata metadata=new MetadataSources(standardRegistry)
-                    .addAnnotatedClass(entityClasses)
-                    .getMetadataBuilder()
-                    .build();
+                settings.put(Environment.SHOW_SQL, "true");
 
-            sessionFactory= metadata.getSessionFactoryBuilder().build();
-            return sessionFactory;
-        }catch (Throwable ex){
-            throw new ExceptionInInitializerError(ex);
+                settings.put(Environment.CURRENT_SESSION_CONTEXT_CLASS, "thread");
+
+                settings.put(Environment.HBM2DDL_AUTO, "create-drop");
+
+                configuration.setProperties(settings);
+
+                entityClasses.forEach(entityClass -> configuration.addAnnotatedClass(entityClass));
+
+                ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+                        .applySettings(configuration.getProperties()).build();
+
+                sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
+        return sessionFactory;
     }
+
 }
