@@ -16,7 +16,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="exercise03_1" options="-parameters" />
+      <module name="exercise03_1" options="" />
     </option>
   </component>
 </project>
