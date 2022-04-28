@@ -1,4 +1,4 @@
-package com.example.exercise03_2.domain.OptionalUniManyToOne;
+package com.example.exercise03_2.domain.OptionalUnidirectionalManyToOne;
 
 import lombok.Data;
 import lombok.NonNull;

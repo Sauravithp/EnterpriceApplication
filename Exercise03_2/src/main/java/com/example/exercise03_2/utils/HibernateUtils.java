@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Properties;
 
 public class HibernateUtils {
+
     private static SessionFactory sessionFactory;
 
     private static Configuration configuration = new Configuration();
 
-    @SuppressWarnings({ "rawtypes" })
     public static SessionFactory getSessionFactory(List<Class> entityClasses) {
         if (sessionFactory == null) {
             try {
